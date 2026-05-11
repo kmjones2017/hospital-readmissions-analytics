@@ -54,3 +54,4 @@ models:
 seeds:
   hospital_readmissions:
     +schema: seeds
+    +quote_columns: false

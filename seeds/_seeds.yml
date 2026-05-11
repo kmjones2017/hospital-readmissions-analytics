@@ -1,0 +1,35 @@
+version: 2
+
+seeds:
+  - name: fips_lookup
+    config:
+      column_types:
+        state_code: string
+        state_fips_code: string
+        county_code: string
+        county_fips_code: string
+        city_code: string
+        city_fips_code: string
+    
+  - name: cms_footnotes
+    config:
+      column_types:
+        footnote_code: string
+        footnote_category: string
+        footnote_text: string
+        footnote_definition: string
+
+  - name: healthcare_acronyms
+    config:
+      column_types:
+        acronym: string
+        meaning: string
+
+  - name: readmission_measures
+    config:
+      column_types:
+        measure_id: string
+        measure_name: string
+        condition_group: string
+        measure_category: string
+        measure_description: string
