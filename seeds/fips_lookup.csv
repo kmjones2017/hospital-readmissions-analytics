@@ -1,4 +1,4 @@
-"State Name","County Name","City Name","State Code","State FIPS Code","County Code","StCnty FIPS Code","City Code","StCntyCity FIPS Code"
+state_name,county_name,city_name,state_code,state_fips_code,county_code,county_fips_code,city_code,city_fips_code
 "ALABAMA","AUTAUGA","AUTAUGAVILLE","AL","01","C001","01001","0220","010010220"
 "ALABAMA","AUTAUGA","BILLINGSLEY","AL","01","C001","01001","0340","010010340"
 "ALABAMA","AUTAUGA","BOOTH","AL","01","C001","01001","0425","010010425"
