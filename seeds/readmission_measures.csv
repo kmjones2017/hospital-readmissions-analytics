@@ -1,0 +1,7 @@
+measure_id,measure_name,condition_group,measure_category,measure_description
+READM-30-AMI-HRRP,Heart Attack Readmission Ratio,Acute Myocardial Infarction (AMI),Readmissions,Excess readmission ratio for heart attack patients
+READM-30-COPD-HRRP,COPD Readmission Ratio,Chronic Obstructive Pulmonary Disease (COPD),Readmissions,Excess readmission ratio for COPD patients
+READM-30-CABG-HRRP,CABG Readmission Ratio,Coronary Artery Bypass Graft (CABG),Readmissions,Excess readmission ratio for CABG patients
+READM-30-HF-HRRP,Heart Failure Readmission Ratio,Heart Failure,Readmissions,Excess readmission ratio for heart failure patients
+READM-30-HIP-KNEE-HRRP,Hip/Knee Replacement Readmission Ratio,Hip/Knee Replacement,Readmissions,Excess readmission ratio for hip/knee replacement patients
+READM-30-PN-HRRP,Pneumonia Readmission Ratio,Pneumonia,Readmissions,Excess readmission ratio for pneumonia patients
