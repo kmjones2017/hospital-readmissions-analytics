@@ -1,16 +1,15 @@
 version: 2
 
 sources:
-  - name: cms
+  - name: atsdr
     catalog: healthcare
     schema: raw
 
     tables:
-      - name: hospital_general_information_raw
-      - name: hospital_readmissions_raw
+      - name: svi_2022_county_raw
 
 models:
-  - name: stg_cms__hospital_general_information
+  - name: stg_cdc__svi_county
     description: "___"
     columns:
       - name: ___

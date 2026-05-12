@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: reference
+    catalog: healthcare
+    schema: seeds
+
+    tables:
+      - name: cms_footnotes
+      - name: fips_lookup
+      - name: healthcare_acronyms
+      - name: readmission_measures 
+
+models:
+  - name: stg_reference__cms_footnotes
+    description: "___"
+    columns:
+      - name: ___
+        description: "___"
+        tests:
