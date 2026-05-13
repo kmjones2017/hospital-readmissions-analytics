@@ -21,16 +21,16 @@ cleaned as (
 
         cast(ep_pov150 as decimal(5,2)) as below_150_percent_poverty_population_percentage,
         cast(ep_unemp as decimal(5,2)) as unemployment_rate,
-        cast(ep_nohsdp as decimal(5,2)) as population_age_25_plus_no_high_school_diploma_percentage,
+        cast(ep_nohsdp as decimal(5,2)) as population_age_25_and_over_no_high_school_diploma_percentage,
         cast(ep_uninsur as decimal(5,2)) as uninsured_population_percentage,
 
         cast(ep_age65 as decimal(5,2)) as population_age_65_and_over_percentage,
-        cast(ep_age17 as decimal(5,2)) as population_under_18_percentage,
+        cast(ep_age17 as decimal(5,2)) as population_under_age_18_percentage,
         cast(ep_disabl as decimal(5,2)) as disabled_population_percentage,
         cast(ep_limeng as decimal(5,2)) as limited_english_proficiency_population_percentage,
 
         cast(ep_minrty as decimal(5,2)) as minority_population_percentage,
-        cast(ep_munit as decimal(5,2)) as ten_plus_unit_housing_structure_percentage,
+        cast(ep_munit as decimal(5,2)) as ten_or_more_unit_housing_structure_percentage,
         cast(ep_mobile as decimal(5,2)) as mobile_home_percentage,
         cast(ep_crowd as decimal(5,2)) as overcrowded_housing_unit_percentage,
         cast(ep_noveh as decimal(5,2)) as no_vehicle_household_percentage,
@@ -54,9 +54,9 @@ final as (
         st_abbr_clean as state_abbreviation,
 
         case
-            when county_clean like '% planning region' 
-                then replace(county_clean, ' planning region', '')
-            else replace(county_clean, ' county', '')
+            when county_clean like '% Planning Region' 
+                then replace(county_clean, ' Planning Region', '')
+            else replace(county_clean, ' County', '')
         end as county_or_planning_region,
 
         area_in_sq_mi,
@@ -67,16 +67,16 @@ final as (
 
         below_150_percent_poverty_population_percentage,
         unemployment_rate,
-        population_age_25_plus_no_high_school_diploma_percentage,
+        population_age_25_and_over_no_high_school_diploma_percentage,
         uninsured_population_percentage,
 
         population_age_65_and_over_percentage,
-        population_under_18_percentage,
+        population_under_age_18_percentage,
         disabled_population_percentage,
         limited_english_proficiency_population_percentage,
 
         minority_population_percentage,
-        ten_plus_unit_housing_structure_percentage,
+        ten_or_more_unit_housing_structure_percentage,
         mobile_home_percentage,
         overcrowded_housing_unit_percentage,
         no_vehicle_household_percentage,

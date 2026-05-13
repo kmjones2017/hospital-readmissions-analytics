@@ -1,0 +1,223 @@
+version: 2
+
+sources:
+  - name: atsdr
+    catalog: healthcare
+    schema: raw
+    description: >
+      Raw CDC/ATSDR Social Vulnerability Index (SVI) 2022 county-level dataset
+      containing demographic, socioeconomic, and housing vulnerability metrics
+      for U.S. counties and planning regions.
+
+    tables:
+      - name: svi_2022_county_raw
+        description: >
+          Raw ingest of the CDC/ATSDR SVI 2022 county dataset loaded directly
+          from source CSV files with minimal transformation.
+
+models:
+  - name: stg_atsdr__svi_county
+    description: >
+      Cleaned and standardized county-level CDC/ATSDR Social Vulnerability Index
+      (SVI) dataset containing demographic, socioeconomic, housing, and transportation
+      vulnerability indicators used for healthcare equity and population risk analysis.
+    columns:
+      - name: state_county_fips_code
+        description: >
+          Five-digit county-level FIPS code uniquely identifying a U.S. county
+          or planning region.
+        tests:
+          - unique
+          - not_null
+        
+      - name: state
+        description: >
+          Properly formatted U.S. state or territory name.
+        tests:
+          - not_null
+
+      - name: state_abbreviation
+        description: >
+          Two-letter USPS state or territory abbreviation.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+                        'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+                        'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+                        'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+                        'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
+                        'DC','PR','VI','GU','MP','AS']
+
+      - name: county_or_planning_region
+        description: >
+          Standardized county or planning region name with administrative suffixes removed.
+        tests:
+          - not_null
+
+      - name: area_in_sq_mi
+        description: >
+          Geographic land area of the county or planning region in square miles.
+
+      - name: total_population
+        description: >
+          Estimated total population of the county or planning region.
+        tests:
+          - not_null
+
+      - name: housing_units
+        description: >
+          Estimated number of housing units in the county or planning region.
+
+      - name: households
+        description: >
+          Estimated number of households in the county or planning region.
+
+      - name: below_150_percent_poverty_population_percentage
+        description: >
+          Estimated percentage of the population living below 150% of the federal poverty threshold.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: unemployment_rate
+        description: >
+          Estimated unemployment percentage for the civilian labor force age 16 and older.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: population_age_25_and_over_no_high_school_diploma_percentage
+        description: >
+          Estimated percentage of adults age 25 and older without a high school diploma.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: uninsured_population_percentage
+        description: >
+          Estimated percentage of the civilian noninstitutionalized population without health insurance.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: population_age_65_and_over_percentage
+        description: >
+          Estimated percentage of the population age 65 and older.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: population_under_age_18_percentage
+        description: >
+          Estimated percentage of the population under age 18.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: disabled_population_percentage
+        description: >
+          Estimated percentage of the civilian noninstitutionalized population with a disability.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: limited_english_proficiency_population_percentage
+        description: >
+          Estimated percentage of the population age 5 and older who speak English less than well.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: minority_population_percentage
+        description: >
+          Estimated percentage of racial and ethnic minority populations.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: ten_or_more_unit_housing_structure_percentage
+        description: >
+          Estimated percentage of housing structures containing 10 or more units.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: mobile_home_percentage
+        description: >
+          Estimated percentage of mobile homes among occupied housing units.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: overcrowded_housing_unit_percentage
+        description: >
+          Estimated percentage of occupied housing units with more people than rooms.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: no_vehicle_household_percentage
+        description: >
+          Estimated percentage of households without access to a vehicle.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: socioeconomic_status_percentile_rank
+        description: >
+          Relative percentile ranking for socioeconomic vulnerability compared to all U.S. counties.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+
+      - name: household_characteristics_percentile_rank
+        description: >
+          Relative percentile ranking for household composition and disability vulnerability.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+        
+      - name: racial_and_ethnic_minority_status_percentile_rank
+        description: >
+          Relative percentile ranking for racial and ethnic minority vulnerability.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+
+      - name: housing_type_and_transport_percentile_rank
+        description: >
+          Relative percentile ranking for housing type and transportation vulnerability.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+
+      - name: overall_vulnerability_percentile_rank
+        description: >
+          Overall county-level social vulnerability percentile ranking combining all SVI themes.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
