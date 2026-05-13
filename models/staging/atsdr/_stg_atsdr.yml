@@ -42,12 +42,13 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
-                        'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
-                        'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-                        'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
-                        'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
-                        'DC','PR','VI','GU','MP','AS']
+              arguments: 
+                values: ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+                          'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+                          'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+                          'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+                          'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
+                          'DC','PR','VI','GU','MP','AS']
 
       - name: county_or_planning_region
         description: >
@@ -78,104 +79,117 @@ models:
           Estimated percentage of the population living below 150% of the federal poverty threshold.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: unemployment_rate
         description: >
           Estimated unemployment percentage for the civilian labor force age 16 and older.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: population_age_25_and_over_no_high_school_diploma_percentage
         description: >
           Estimated percentage of adults age 25 and older without a high school diploma.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: uninsured_population_percentage
         description: >
           Estimated percentage of the civilian noninstitutionalized population without health insurance.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: population_age_65_and_over_percentage
         description: >
           Estimated percentage of the population age 65 and older.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: population_under_age_18_percentage
         description: >
           Estimated percentage of the population under age 18.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: disabled_population_percentage
         description: >
           Estimated percentage of the civilian noninstitutionalized population with a disability.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: limited_english_proficiency_population_percentage
         description: >
           Estimated percentage of the population age 5 and older who speak English less than well.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: minority_population_percentage
         description: >
           Estimated percentage of racial and ethnic minority populations.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: ten_or_more_unit_housing_structure_percentage
         description: >
           Estimated percentage of housing structures containing 10 or more units.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: mobile_home_percentage
         description: >
           Estimated percentage of mobile homes among occupied housing units.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: overcrowded_housing_unit_percentage
         description: >
           Estimated percentage of occupied housing units with more people than rooms.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: no_vehicle_household_percentage
         description: >
           Estimated percentage of households without access to a vehicle.
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
+              arguments:
+                min_value: 0
+                max_value: 100
 
       - name: socioeconomic_status_percentile_rank
         description: >
@@ -183,8 +197,9 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
+              arguments:
+                min_value: 0
+                max_value: 1
 
       - name: household_characteristics_percentile_rank
         description: >
@@ -192,8 +207,9 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
+              arguments:
+                min_value: 0
+                max_value: 1
         
       - name: racial_and_ethnic_minority_status_percentile_rank
         description: >
@@ -201,8 +217,9 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
+              arguments:
+                min_value: 0
+                max_value: 1
 
       - name: housing_type_and_transport_percentile_rank
         description: >
@@ -210,8 +227,9 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
+              arguments:
+                min_value: 0
+                max_value: 1
 
       - name: overall_vulnerability_percentile_rank
         description: >
@@ -219,5 +237,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
+              arguments: 
+                min_value: 0
+                max_value: 1

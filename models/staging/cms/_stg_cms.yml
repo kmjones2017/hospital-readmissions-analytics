@@ -16,3 +16,10 @@ models:
       - name: ___
         description: "___"
         tests:
+
+  - name: stg_cms__hospital_readmissions
+    description: "___"
+    columns:
+      - name: ___
+        description: "___"
+        tests:
