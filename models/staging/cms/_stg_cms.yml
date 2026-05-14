@@ -209,9 +209,138 @@ models:
           Parsed numeric count of readmission measures that are worse than the national value.
 
 
-  - name: stg_cms__hospital_readmissions
-    description: "___"
+  - name: stg_cms__hrrp_hospital
+    description: >
+      Cleaned and standardized CMS Hospital Readmissions Reduction Program
+      dataset containing hospital-level readmission performance metrics,
+      reporting periods, and quality measurements. Mixed-type CMS values
+      are preserved as raw text while parsed numeric equivalents are
+      provided for analysis.
+
     columns:
-      - name: ___
-        description: "___"
+      - name: facility_id
+        description: >
+          CMS facility identifier uniquely identifying a hospital.
         tests:
+          - not_null
+
+      - name: facility_name
+        description: >
+          Name of the hospital facility reported by CMS.
+        tests:
+          - not_null
+
+      - name: state_abbreviation
+        description: >
+          Two-letter USPS abbreviation representing the hospital state.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values:
+                  [
+                    'AL','AK','AZ','AR','CA','CO','CT','DE',
+                    'FL','GA','HI','ID','IL','IN','IA','KS',
+                    'KY','LA','ME','MD','MA','MI','MN','MS',
+                    'MO','MT','NE','NV','NH','NJ','NM','NY',
+                    'NC','ND','OH','OK','OR','PA','RI','SC',
+                    'SD','TN','TX','UT','VT','VA','WA','WV',
+                    'WI','WY','DC','PR'
+                  ]
+
+      - name: measure_id
+        description: >
+          CMS readmission measure identifier representing a specific
+          clinical condition used in readmission reporting.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values:
+                  [
+                    'READM-30-AMI-HRRP',
+                    'READM-30-COPD-HRRP',
+                    'READM-30-CABG-HRRP',
+                    'READM-30-HF-HRRP',
+                    'READM-30-HIP-KNEE-HRRP',
+                    'READM-30-PN-HRRP'
+                  ]
+
+      - name: number_of_discharges_raw
+        description: >
+          Original CMS discharge count value before cleaning and parsing.
+
+      - name: number_of_discharges_numeric
+        description: >
+          Parsed numeric count of hospital discharges used in readmission
+          calculations.
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments: 
+                expression: ">= 0"
+
+      - name: number_of_readmissions_raw
+        description: >
+          Original CMS readmission count before cleaning and parsing.
+
+      - name: number_of_readmissions_numeric
+        description: >
+          Parsed numeric count of hospital readmissions.
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments: 
+                expression: ">= 0"
+
+      - name: excess_readmission_ratio_raw
+        description: >
+          Original CMS excess readmission ratio before cleaning.
+
+      - name: excess_readmission_ratio_numeric
+        description: >
+          Parsed excess readmission ratio. Values greater than 1 indicate
+          more readmissions than expected.
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments: 
+                expression: ">= 0"
+
+      - name: predicted_readmission_rate_raw
+        description: >
+          Original predicted readmission rate value before parsing.
+
+      - name: predicted_readmission_rate_numeric
+        description: >
+          Parsed predicted hospital readmission rate.
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments: 
+                expression: ">= 0"
+
+      - name: expected_readmission_rate_raw
+        description: >
+          Original expected readmission rate value before parsing.
+
+      - name: expected_readmission_rate_numeric
+        description: >
+          Parsed expected readmission rate calculated from CMS benchmarks.
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments: 
+                expression: ">= 0"
+
+      - name: start_date
+        description: >
+          Beginning date of the CMS reporting period.
+        tests:
+          - not_null
+
+      - name: end_date
+        description: >
+          Ending date of the CMS reporting period.
+        tests:
+          - not_null
+
+      - name: reporting_period
+        description: >
+          Derived reporting period identifier representing the covered
+          CMS reporting interval.
