@@ -1,9 +1,13 @@
-{% macro standardize_boolean(column) %}
-    
+{% macro standardize_boolean(column_name) %}
+
     case
 
-        when lower({{ column }}) in ('1', 'true', 'yes', 'y') then true
-        when lower({{ column }}) in ('0', 'false', 'no', 'n') then false
+        when lower(trim({{ column_name }})) in ('1', 'true', 'yes', 'y')
+            then true
+
+        when lower(trim({{ column_name }})) in ('0', 'false', 'no', 'n')
+            then false
+
         else null
 
     end

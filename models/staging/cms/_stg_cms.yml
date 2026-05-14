@@ -7,15 +7,207 @@ sources:
 
     tables:
       - name: hospital_general_information_raw
+        description: >
+          Raw CMS Hospital General Information dataset containing
+          hospital location, ownership, ratings, and quality measure
+          summary information.
+
       - name: hospital_readmissions_raw
+        description: >
+          Raw CMS Hospital Readmissions Reduction Program dataset
+          containing hospital readmission metrics by measure type.
 
 models:
+
   - name: stg_cms__hospital_general_information
-    description: "___"
+
+    description: >
+      Cleaned and standardized CMS hospital general information dataset.
+      Includes hospital identification, location, ownership, service
+      availability, and summarized quality metrics with problematic
+      mixed-type values separated into raw and numeric versions.
+
     columns:
-      - name: ___
-        description: "___"
+
+      - name: facility_id
+        description: >
+          CMS facility identifier uniquely identifying each hospital.
         tests:
+          - unique
+          - not_null
+
+      - name: facility_name
+        description: >
+          Hospital facility name.
+        tests:
+          - not_null
+
+      - name: facility_address
+        description: >
+          Street address of the hospital.
+
+      - name: city_town
+        description: >
+          City where the hospital is located.
+
+      - name: zip_code
+        description: >
+          Hospital ZIP code.
+        tests:
+          - not_null
+
+      - name: county_parish
+        description: >
+          County or parish associated with hospital location.
+
+      - name: state_abbreviation
+        description: >
+          Two-letter USPS state abbreviation.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values:
+                  [
+                    'AL','AK','AZ','AR','CA','CO','CT','DE',
+                    'FL','GA','HI','ID','IL','IN','IA','KS',
+                    'KY','LA','ME','MD','MA','MI','MN','MS',
+                    'MO','MT','NE','NV','NH','NJ','NM','NY',
+                    'NC','ND','OH','OK','OR','PA','RI','SC',
+                    'SD','TN','TX','UT','VT','VA','WA','WV',
+                    'WI','WY','DC','PR'
+                  ]
+
+      - name: telephone_number
+        description: >
+          Hospital contact telephone number.
+
+      - name: hospital_type
+        description: >
+          Hospital classification defined by CMS.
+
+      - name: hospital_ownership
+        description: >
+          Ownership category of the hospital.
+
+      - name: has_emergency_services
+        description: >
+          Indicates whether the hospital provides emergency services.
+
+      - name: is_birthing_friendly
+        description: >
+          Indicates whether the hospital meets CMS birthing-friendly
+          designation criteria.
+
+      - name: hospital_overall_rating_raw
+        description: >
+          Original CMS hospital rating value before cleaning.
+
+      - name: hospital_overall_rating_numeric
+        description: >
+          Parsed numeric hospital rating value.
+        tests:
+          - dbt_utils.accepted_range:
+              arguments: 
+                min_value: 1
+                max_value: 5
+
+      - name: mortality_measure_group_included_measure_count_raw
+        description: >
+          Original number of measures included in the mortality measure group before cleaning.
+
+      - name: mortality_measure_group_included_measure_count_numeric
+        description: >
+          Parsed numeric count of measures included in the mortality measure group.
+
+      - name: mortality_measures_better_than_national_value_raw
+        description: >
+          Original number of mortality measures that are better than the national value before cleaning.
+
+      - name: mortality_measures_better_than_national_value_numeric
+        description: >
+          Parsed numeric count of mortality measures that are better than the national value.
+
+      - name: mortality_measures_matching_national_value_raw
+        description: >
+          Original number of mortality measures that are no better than the national value before cleaning.
+
+      - name: mortality_measures_matching_national_value_numeric
+        description: >
+          Parsed numeric count of mortality measures that are no better than the national value.
+
+      - name: mortality_measures_worse_than_national_value_raw
+        description: >
+          Original number of mortality measures that are worse than the national value before cleaning.
+
+      - name: mortality_measures_worse_than_national_value_numeric
+        description: >
+          Parsed numeric count of mortality measures that are worse than the national value.
+
+      - name: safety_of_care_measure_group_included_measure_count_raw
+        description: >
+          Original number of Safety of care measures used in the overall star rating of each hospital before cleaning.
+
+      - name: safety_of_care_measure_group_included_measure_count_numeric
+        description: >
+          Parsed numeric count of Safety of care measures used in the overall star rating of each hospital.
+
+      - name: safety_of_care_measures_better_than_national_value_raw
+        description: >
+          Original number of Safety of care measures that are better than the national value before cleaning.
+
+      - name: safety_of_care_measures_better_than_national_value_numeric
+        description: >
+          Parsed numeric count of Safety of care measures that are better than the national value.
+
+      - name: safety_of_care_measures_matching_national_value_raw
+        description: >
+          Original number of Safety of care measures that are no better than the national value before cleaning.
+
+      - name: safety_of_care_measures_matching_national_value_numeric
+        description: >
+          Parsed numeric count of Safety of care measures that are no better than the national value.
+
+      - name: safety_of_care_measures_worse_than_national_value_raw
+        description: >
+          Original number of Safety of care measures that are worse than the national value before cleaning.
+
+      - name: safety_of_care_measures_worse_than_national_value_numeric
+        description: >
+          Parsed numeric count of Safety of care measures that are worse than the national value.
+
+      - name: readmission_measure_group_included_measure_count_raw
+        description: >
+          Original number of measures included in the readmission measure group before cleaning.
+
+      - name: readmission_measure_group_included_measure_count_numeric
+        description: >
+          Parsed numeric count of measures included in the readmission measure group.
+
+      - name: readmission_measures_better_than_national_value_raw
+        description: >
+          Original number of readmission measures that are better than the national value before cleaning.
+
+      - name: readmission_measures_better_than_national_value_numeric
+        description: >
+          Parsed numeric count of readmission measures that are better than the national value.
+
+      - name: readmission_measures_matching_national_value_raw
+        description: >
+          Original number of readmission measures that are no better than the national value before cleaning.
+
+      - name: readmission_measures_matching_national_value_numeric
+        description: >
+          Parsed numeric count of readmission measures that are no better than the national value.
+
+      - name: readmission_measures_worse_than_national_value_raw
+        description: >
+          Original number of readmission measures that are worse than the national value before cleaning.
+
+      - name: readmission_measures_worse_than_national_value_numeric
+        description: >
+          Parsed numeric count of readmission measures that are worse than the national value.
+
 
   - name: stg_cms__hospital_readmissions
     description: "___"
