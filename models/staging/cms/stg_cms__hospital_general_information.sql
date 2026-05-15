@@ -22,8 +22,8 @@ cleaned as (
         trim(initcap(hospital_type)) as hospital_type,
         trim(hospital_ownership) as hospital_ownership,
 
-        standardize_boolean(emergency_services) as has_emergency_services,
-        standardize_boolean(meets_criteria_for_birthing_friendly_designation) as is_birthing_friendly,
+        {{ standardize_boolean('emergency_services') }} as has_emergency_services,
+        {{ standardize_boolean('meets_criteria_for_birthing_friendly_designation') }} as is_birthing_friendly,
 
         trim(cast(hospital_overall_rating as string)) as hospital_overall_rating_raw,
         cast({{ parse_numeric_or_null('hospital_overall_rating') }} as int) as hospital_overall_rating_numeric,
