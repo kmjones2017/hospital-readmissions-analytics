@@ -10,6 +10,7 @@ cleaned as (
     
         trim(county_fips_code) as county_fips_code,
         trim(initcap(county_name)) as county_name,
+        trim(upper(county_name)) as county_join_key,
         trim(upper(state_code)) as state_abbreviation,
         trim(initcap(state_name)) as state_name,
         trim(state_fips_code) as state_fips_code

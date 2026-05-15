@@ -1,0 +1,39 @@
+models:
+  - name: int_hospitals_enriched
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_hospital_svi
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_readmission_measure_enriched
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_hospital_readmission_performance
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_hospital_complete
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 

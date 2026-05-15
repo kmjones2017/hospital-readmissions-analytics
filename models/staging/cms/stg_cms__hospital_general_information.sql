@@ -15,6 +15,7 @@ cleaned as (
         trim(city_town) as city_town,
         cast(trim(zip_code) as string) as zip_code,
         trim(county_parish) as county_parish,
+        trim(upper(county_parish)) as county_join_key,
         trim(upper(state)) as state_abbreviation,
         
         cast(trim(telephone_number) as string) as telephone_number,
@@ -78,6 +79,7 @@ final as (
         city_town,
         zip_code,
         county_parish,
+        county_join_key,
         state_abbreviation,
         telephone_number,
 
