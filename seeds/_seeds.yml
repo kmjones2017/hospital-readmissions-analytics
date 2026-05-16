@@ -1,7 +1,10 @@
 version: 2
-
-seeds:
+  
+seeds:  
   - name: fips_lookup
+    description: >
+      County and state FIPS reference data used to map hospital county names
+      to standardized county FIPS codes.
     config:
       column_types:
         state_code: string
@@ -10,8 +13,11 @@ seeds:
         county_fips_code: string
         city_code: string
         city_fips_code: string
-    
+
   - name: cms_footnotes
+    description: >
+      CMS footnote code reference table used to interpret reporting limitations,
+      suppressed values, and special data-quality notes.
     config:
       column_types:
         footnote_code: string
@@ -20,12 +26,17 @@ seeds:
         footnote_definition: string
 
   - name: healthcare_acronyms
+    description: >
+      Healthcare acronym glossary used for documentation and business readability.
     config:
       column_types:
         acronym: string
         meaning: string
 
   - name: readmission_measures
+    description: >
+      Reference table mapping CMS readmission measure IDs to readable measure,
+      condition, category, and description fields.
     config:
       column_types:
         measure_id: string
@@ -33,3 +44,13 @@ seeds:
         condition_group: string
         measure_category: string
         measure_description: string
+
+  - name: county_name_overrides
+    description: >
+      Manual county-name correction table used to resolve known mismatches
+      between CMS hospital county names and FIPS county reference names.
+    config:
+      column_types:
+        state_abbreviation: string
+        source_county_name: string
+        standardized_county_name: string

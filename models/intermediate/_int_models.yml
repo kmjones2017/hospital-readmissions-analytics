@@ -1,0 +1,148 @@
+models:
+  - name: int_hospitals_enriched
+    description: >
+      Intermediate hospital enrichment model that combines cleaned CMS hospital
+      general information with county FIPS reference data and county-name
+      override mappings. This model standardizes hospital geography for
+      downstream dimensional modeling and identifies whether each hospital was
+      successfully mapped to county-level FIPS data.
+    columns:
+      - name: facility_id
+        data_type: string
+        description: >
+          CMS facility identifier uniquely identifying a hospital.
+        tests:
+          - unique
+          - not_null
+          
+      - name: facility_name
+        data_type: string
+        description: >
+          Hospital facility name from CMS Hospital General Information.
+
+      - name: facility_address
+        data_type: string
+        description: >
+          Street address of the hospital facility.
+
+      - name: city_or_town_name
+        data_type: string
+        description: >
+          City or town where the hospital is located.
+
+      - name: zip_code
+        data_type: string
+        description: >
+          Hospital ZIP code.
+
+      - name: county_fips
+        data_type: string
+        description: >
+          Five-digit county FIPS code matched from the county FIPS reference
+          lookup. May be null for U.S. territories or special geographies not
+          covered by the county reference mapping.
+
+      - name: county_or_parish_name
+        data_type: string
+        description: >
+          County, parish, borough, or equivalent geographic name from the CMS
+          hospital source data.
+
+      - name: state_fips
+        data_type: string
+        description: >
+          Two-digit state FIPS code matched from the FIPS reference lookup.
+          May be null when county-level mapping is unavailable.
+
+      - name: state_abbreviation
+        data_type: string
+        description: >
+          Two-letter state or territory abbreviation from the CMS hospital
+          source data.
+
+      - name: state_name
+        data_type: string
+        description: >
+          Full state name matched from the FIPS reference lookup. May be null
+          when county-level mapping is unavailable.
+
+      - name: hospital_type
+        data_type: string
+        description: >
+          CMS hospital type classification.
+
+      - name: hospital_ownership
+        data_type: string
+        description: >
+          CMS hospital ownership category.
+
+      - name: has_emergency_services
+        data_type: boolean
+        description: >
+          Indicates whether the hospital provides emergency services.
+
+      - name: is_birthing_friendly
+        data_type: boolean
+        description: >
+          Indicates whether the hospital meets CMS birthing-friendly designation
+          criteria.
+
+      - name: original_county_join_key
+        data_type: string
+        description: >
+          Normalized county join key generated from the original CMS hospital
+          county/parish value before override logic is applied.
+
+      - name: standardized_county_join_key
+        data_type: string
+        description: >
+          Normalized county join key from the county-name override table. Used
+          when the original CMS county/parish value needs to be translated to
+          match the FIPS reference data.
+
+      - name: resolved_county_join_key
+        data_type: string
+        description: >
+          Final county join key used for FIPS enrichment. Uses the override key
+          when available; otherwise falls back to the original hospital county
+          join key.
+
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: >
+          Indicates whether the hospital record successfully matched to a
+          county-level FIPS code.
+        tests:
+          - not_null
+
+
+  - name: int_hospital_svi
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_readmission_measure_enriched
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_hospital_readmission_performance
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 
+
+
+  - name: int_hospital_complete
+    description: 
+    columns:
+      - name: ____
+        data_type: 
+        description: 

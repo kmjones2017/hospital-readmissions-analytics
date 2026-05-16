@@ -14,8 +14,9 @@ cleaned as (
         trim(address) as facility_address,
         trim(city_town) as city_town,
         cast(trim(zip_code) as string) as zip_code,
+        
         trim(county_parish) as county_parish,
-        trim(upper(county_parish)) as county_join_key,
+        regexp_replace({{ normalize_county_name('county_parish') }}, '\\s+', '') as county_join_key,
         trim(upper(state)) as state_abbreviation,
         
         cast(trim(telephone_number) as string) as telephone_number,
@@ -71,64 +72,7 @@ cleaned as (
 
 final as (
 
-    select 
-
-        facility_id,
-        facility_name,
-        facility_address,
-        city_town,
-        zip_code,
-        county_parish,
-        county_join_key,
-        state_abbreviation,
-        telephone_number,
-
-        hospital_type,
-        hospital_ownership,
-
-        has_emergency_services,
-        is_birthing_friendly,
-
-        hospital_overall_rating_raw,
-        hospital_overall_rating_numeric,
-
-        mortality_measure_group_included_measure_count_raw,
-        mortality_measure_group_included_measure_count_numeric,
-
-        mortality_measures_better_than_national_value_raw,
-        mortality_measures_better_than_national_value_numeric,
-
-        mortality_measures_matching_national_value_raw,
-        mortality_measures_matching_national_value_numeric,
-
-        mortality_measures_worse_than_national_value_raw,
-        mortality_measures_worse_than_national_value_numeric,
-
-        safety_of_care_measure_group_included_measure_count_raw,
-        safety_of_care_measure_group_included_measure_count_numeric,
-
-        safety_of_care_measures_better_than_national_value_raw,
-        safety_of_care_measures_better_than_national_value_numeric,
-
-        safety_of_care_measures_matching_national_value_raw,
-        safety_of_care_measures_matching_national_value_numeric,
-
-        safety_of_care_measures_worse_than_national_value_raw,
-        safety_of_care_measures_worse_than_national_value_numeric,
-
-        readmission_measure_group_included_measure_count_raw,
-        readmission_measure_group_included_measure_count_numeric,
-
-        readmission_measures_better_than_national_value_raw,
-        readmission_measures_better_than_national_value_numeric,
-
-        readmission_measures_matching_national_value_raw,
-        readmission_measures_matching_national_value_numeric,
-
-        readmission_measures_worse_than_national_value_raw,
-        readmission_measures_worse_than_national_value_numeric
-
-    from cleaned
+    select * from cleaned
 
 )
 
