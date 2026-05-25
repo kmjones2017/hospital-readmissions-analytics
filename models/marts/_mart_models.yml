@@ -1,0 +1,340 @@
+version: 2
+
+models:
+  - name: dim_hospital
+    description: >
+      Hospital dimension table containing one row per CMS facility. Includes
+      hospital identity, location, ownership, service availability, and mapping
+      status fields used for filtering and joining downstream readmission facts
+      and analytics marts.
+
+    columns:
+
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier uniquely identifying a hospital.
+        tests:
+          - unique
+          - not_null
+
+      - name: facility_name
+        data_type: string
+        description: Hospital facility name.
+
+      - name: facility_address
+        data_type: string
+        description: Street address of the hospital.
+
+      - name: city_or_town_name
+        data_type: string
+        description: City or town where the hospital is located.
+
+      - name: zip_code
+        data_type: string
+        description: Hospital ZIP code.
+
+      - name: county_fips
+        data_type: string
+        description: County FIPS code assigned through geographic enrichment. May be null for territories or special geographies not mapped to county-level FIPS.
+
+      - name: county_or_parish_name
+        data_type: string
+        description: County, parish, borough, or equivalent geography from the CMS hospital record.
+
+      - name: state_fips
+        data_type: string
+        description: Two-digit state FIPS code assigned through geographic enrichment.
+
+      - name: state_abbreviation
+        data_type: string
+        description: Two-letter state or territory abbreviation.
+
+      - name: state_name
+        data_type: string
+        description: Full state name from the FIPS reference lookup.
+
+      - name: hospital_type
+        data_type: string
+        description: CMS hospital type classification.
+
+      - name: hospital_ownership
+        data_type: string
+        description: CMS hospital ownership category.
+
+      - name: has_emergency_services
+        data_type: boolean
+        description: Indicates whether the hospital provides emergency services.
+
+      - name: is_birthing_friendly
+        data_type: boolean
+        description: Indicates whether the hospital meets CMS birthing-friendly designation criteria.
+
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level FIPS data.
+
+      - name: is_svi_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level SVI data.
+
+
+  - name: dim_measure
+    description: >
+      Readmission measure dimension table containing one row per CMS HRRP
+      measure. Provides readable measure names, clinical condition groupings,
+      categories, and descriptions for downstream readmission analysis.
+
+    columns:
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+        tests:
+          - unique
+          - not_null
+
+      - name: measure_name
+        data_type: string
+        description: Human-readable name of the readmission measure.
+
+      - name: condition_group
+        data_type: string
+        description: Medical condition or procedure group associated with the measure.
+
+      - name: measure_category
+        data_type: string
+        description: High-level measurement category.
+
+      - name: measure_description
+        data_type: string
+        description: Expanded explanation of the readmission measure.
+
+
+  - name: fct_hospital_readmissions
+    description: >
+      Fact table containing hospital readmission performance metrics at the
+      facility, readmission measure, and reporting period grain.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - facility_id
+              - measure_id
+              - reporting_period
+    columns:
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier for the hospital.
+        tests:
+          - not_null
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+        tests:
+          - not_null
+
+      - name: number_of_discharges_numeric
+        data_type: integer
+        description: Parsed number of hospital discharges for the measure.
+
+      - name: number_of_readmissions_numeric
+        data_type: integer
+        description: Parsed number of hospital readmissions for the measure.
+
+      - name: excess_readmission_ratio_numeric
+        data_type: decimal
+        description: Parsed excess readmission ratio; values above 1 indicate more readmissions than expected.
+
+      - name: predicted_readmission_rate_numeric
+        data_type: decimal
+        description: Parsed predicted readmission rate.
+
+      - name: expected_readmission_rate_numeric
+        data_type: decimal
+        description: Parsed expected readmission rate.
+
+      - name: readmission_rate_difference
+        data_type: decimal
+        description: Difference between predicted and expected readmission rates.
+
+      - name: has_excess_readmissions
+        data_type: boolean
+        description: Indicates whether the hospital had more readmissions than expected.
+
+      - name: readmission_performance_status
+        data_type: string
+        description: Business-friendly readmission performance category.
+
+      - name: is_high_discharge_volume
+        data_type: boolean
+        description: Indicates whether the row meets the selected high discharge volume threshold.
+
+      - name: reporting_period
+        data_type: string
+        description: HRRP reporting period label.
+        tests:
+          - not_null
+
+
+  - name: fct_hospital_social_risk
+    description: >
+      Fact table containing hospital-level social vulnerability indicators
+      based on matched county-level SVI data. Supports analysis of hospital
+      performance in relation to social risk and population vulnerability.
+    columns:
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier for the hospital.
+        tests:
+          - unique
+          - not_null
+
+      - name: county_fips
+        data_type: string
+        description: County FIPS code used to match the hospital to SVI data.
+
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: Indicates whether the hospital matched to county-level FIPS data.
+
+      - name: is_svi_mapped
+        data_type: boolean
+        description: Indicates whether the hospital matched to county-level SVI data.
+
+      - name: total_population
+        data_type: integer
+        description: Estimated total population of the matched county.
+
+      - name: housing_units
+        data_type: integer
+        description: Estimated number of housing units in the matched county.
+
+      - name: households
+        data_type: integer
+        description: Estimated number of households in the matched county.
+
+      - name: below_150_percent_poverty_population_percentage
+        data_type: decimal
+        description: Estimated percentage of the matched county population below 150% of the poverty threshold.
+
+      - name: unemployment_rate
+        data_type: decimal
+        description: Estimated unemployment percentage in the matched county.
+
+      - name: uninsured_population_percentage
+        data_type: decimal
+        description: Estimated percentage of uninsured residents in the matched county.
+
+      - name: disabled_population_percentage
+        data_type: decimal
+        description: Estimated percentage of disabled residents in the matched county.
+
+      - name: overall_vulnerability_percentile_rank
+        data_type: decimal
+        description: Overall SVI percentile rank for the matched county.
+
+
+  - name: mart_hospital_equity_analysis
+    description: >
+      Wide business-facing mart combining hospital attributes, readmission
+      performance, and county-level SVI indicators. Designed to support
+      dashboard analysis of relationships between social vulnerability and
+      hospital readmission outcomes.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - facility_id
+              - measure_id
+              - reporting_period
+    columns:
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier.
+        tests:
+          - not_null
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+        tests:
+          - not_null
+
+      - name: condition_group
+        data_type: string
+        description: Medical condition or procedure group for the readmission measure.
+
+      - name: excess_readmission_ratio_numeric
+        data_type: decimal
+        description: Parsed excess readmission ratio.
+
+      - name: readmission_performance_status
+        data_type: string
+        description: Business-friendly readmission performance category.
+
+      - name: overall_vulnerability_percentile_rank
+        data_type: decimal
+        description: County-level overall SVI percentile rank.
+
+      - name: vulnerability_category
+        data_type: string
+        description: Categorical social vulnerability band derived from overall SVI percentile rank.
+
+      - name: reporting_period
+        data_type: string
+        description: HRRP reporting period.
+        tests:
+          - not_null
+
+        
+  - name: mart_hospital_performance_summary
+    description: >
+      Aggregated hospital-level performance mart containing one row per hospital.
+      Summarizes average readmission performance, counts of measures by
+      performance status, hospital attributes, and social vulnerability context.
+
+    columns:
+
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier.
+        tests:
+          - unique
+          - not_null
+
+      - name: facility_name
+        data_type: string
+        description: Hospital facility name.
+
+      - name: average_excess_readmission_ratio
+        data_type: decimal
+        description: Average excess readmission ratio across available HRRP measures.
+
+      - name: measures_better_than_expected_count
+        data_type: integer
+        description: Number of readmission measures where the hospital performed better than expected.
+
+      - name: measures_as_expected_count
+        data_type: integer
+        description: Number of readmission measures where the hospital performed as expected.
+
+      - name: measures_worse_than_expected_count
+        data_type: integer
+        description: Number of readmission measures where the hospital performed worse than expected.
+
+      - name: readmission_measure_count
+        data_type: integer
+        description: Number of readmission measures represented for the hospital.
+
+      - name: overall_readmission_performance_status
+        data_type: string
+        description: Overall hospital readmission performance category based on average excess readmission ratio.
+
+      - name: overall_vulnerability_percentile_rank
+        data_type: decimal
+        description: County-level overall SVI percentile rank.
+
+      - name: vulnerability_category
+        data_type: string
+        description: Social vulnerability band derived from county-level SVI percentile rank.

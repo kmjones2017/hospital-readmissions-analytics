@@ -1,0 +1,82 @@
+with hospital_complete as (
+
+    select * from {{ ref('int_hospital_complete') }}
+
+),
+
+aggregated as (
+
+    select
+        facility_id,
+        max(facility_name) as facility_name,
+        max(city_or_town_name) as city_or_town_name,
+        max(county_or_parish_name) as county_or_parish_name,
+        max(state_abbreviation) as state_abbreviation,
+        max(state_name) as state_name,
+
+        max(hospital_type) as hospital_type,
+        max(hospital_ownership) as hospital_ownership,
+        max(has_emergency_services) as has_emergency_services,
+        max(is_birthing_friendly) as is_birthing_friendly,
+
+        max(is_county_fips_mapped) as is_county_fips_mapped,
+        max(is_svi_mapped) as is_svi_mapped,
+
+        avg(excess_readmission_ratio_numeric) as average_excess_readmission_ratio,
+
+        sum(
+            case
+                when readmission_performance_status = 'better_than_expected' then 1
+                else 0
+            end
+        ) as measures_better_than_expected_count,
+
+        sum(
+            case
+                when readmission_performance_status = 'as_expected' then 1
+                else 0
+            end
+        ) as measures_as_expected_count,
+
+        sum(
+            case
+                when readmission_performance_status = 'worse_than_expected' then 1
+                else 0
+            end
+        ) as measures_worse_than_expected_count,
+
+        count(measure_id) as readmission_measure_count,
+
+        max(overall_vulnerability_percentile_rank) as overall_vulnerability_percentile_rank
+
+    from hospital_complete
+
+    group by facility_id
+
+),
+
+final as (
+
+    select
+        *,
+
+        case
+            when average_excess_readmission_ratio > 1 then 'worse_than_expected'
+            when average_excess_readmission_ratio = 1 then 'as_expected'
+            when average_excess_readmission_ratio < 1 then 'better_than_expected'
+            else 'not_available'
+        end as overall_readmission_performance_status,
+
+        case
+            when overall_vulnerability_percentile_rank >= 0.90 then 'very_high_vulnerability'
+            when overall_vulnerability_percentile_rank >= 0.75 then 'high_vulnerability'
+            when overall_vulnerability_percentile_rank >= 0.50 then 'moderate_vulnerability'
+            when overall_vulnerability_percentile_rank is not null then 'lower_vulnerability'
+            else 'not_mapped'
+        end as vulnerability_category
+
+    from aggregated
+
+)
+
+select * from final
