@@ -24,6 +24,9 @@ sources:
         description: >
           Reference seed documenting readmission measure identifiers and categories.
 
+      - name: county_name_overrides
+        description: Reference seed manually created to correct county name mismatches between the CMS and FIPS datasets.
+
 
 models:
   - name: stg_reference__cms_footnotes
@@ -58,7 +61,10 @@ models:
 
   - name: stg_reference__fips_lookup
     description: >
-      Cleaned county-level FIPS lookup table used for geographic joins. Removes non-county records lacking county identifiers.
+      Standardized county-level FIPS reference lookup used for healthcare
+      geographic enrichment and county-based joins. Cleans and normalizes
+      county and state identifiers from raw reference data for consistent
+      matching against CMS hospital records.
     columns:
       - name: county_fips_code
         description: >
@@ -70,6 +76,14 @@ models:
       - name: county_name
         description: >
           County name standardized for joining.
+        tests:
+          - not_null
+
+      - name: county_join_key
+        description: >
+          Normalized county join key generated from the FIPS county name.
+          Used for matching county-level FIPS reference data to hospital
+          county/parish records.
         tests:
           - not_null
 
@@ -145,3 +159,49 @@ models:
           Expanded explanation of the measure.
         tests:
           - not_null
+
+
+  - name: stg_reference__county_name_overrides
+    description: >
+      Cleaned county-name override reference model used to resolve known
+      county-name mismatches between CMS hospital data and county FIPS
+      reference data before geographic enrichment.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - state_abbreviation
+              - source_county_join_key
+    columns:
+      - name: state_abbreviation
+        description: >
+          Two-letter USPS state or territory abbreviation for the county-name
+          override.
+        tests:
+          - not_null
+
+      - name: source_county_name
+        description: >
+          County name as it appears in the CMS hospital source data.
+        tests:
+          - not_null
+
+      - name: standardized_county_name
+        description: >
+          County name standardized to match the FIPS lookup reference table.
+        tests:
+          - not_null
+
+      - name: source_county_join_key
+        description: >
+          Normalized join key generated from the CMS source county name.
+        tests:
+          - not_null
+
+      - name: standardized_county_join_key
+        description: >
+          Normalized join key generated from the standardized county name used
+          to join against the FIPS lookup table.
+        tests:
+          - not_null
+        

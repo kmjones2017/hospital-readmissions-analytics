@@ -60,6 +60,14 @@ models:
         description: >
           County or parish associated with hospital location.
 
+      - name: county_join_key
+        description: >
+          Normalized county/parish join key generated from the hospital county
+          or parish name. Used for matching hospital records to county-level
+          FIPS reference data.
+        tests:
+          - not_null
+
       - name: state_abbreviation
         description: >
           Two-letter USPS state abbreviation.
