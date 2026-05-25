@@ -26,6 +26,11 @@ final as (
         hospitals.state_name,
         hospitals.is_county_fips_mapped,
 
+        case
+            when svi.state_county_fips_code is not null then true
+            else false
+        end as is_svi_mapped,
+
         hospitals.hospital_type,
         hospitals.hospital_ownership,
         hospitals.has_emergency_services,

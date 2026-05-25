@@ -117,32 +117,337 @@ models:
 
 
   - name: int_hospital_svi
-    description: 
+    description: >
+      Intermediate model that enriches CMS hospital records with county-level
+      Social Vulnerability Index (SVI) indicators using county FIPS mapping.
+      This model supports downstream healthcare equity and population-risk
+      analysis while preserving mapping flags for hospitals that cannot be
+      matched to county-level FIPS or SVI records.
     columns:
-      - name: ____
-        data_type: 
-        description: 
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier uniquely identifying a hospital.
 
+      - name: facility_name
+        data_type: string
+        description: Hospital facility name from CMS.
 
+      - name: facility_address
+        data_type: string
+        description: Street address of the hospital.
+
+      - name: city_or_town_name
+        data_type: string
+        description: City or town where the hospital is located.
+
+      - name: zip_code
+        data_type: string
+        description: Hospital ZIP code.
+
+      - name: county_fips
+        data_type: string
+        description: County FIPS code assigned through hospital geographic enrichment.
+
+      - name: county_or_parish_name
+        data_type: string
+        description: County, parish, borough, or equivalent geography from the CMS hospital record.
+
+      - name: state_fips
+        data_type: string
+        description: Two-digit state FIPS code assigned through geographic enrichment.
+
+      - name: state_abbreviation
+        data_type: string
+        description: Two-letter state or territory abbreviation.
+
+      - name: state_name
+        data_type: string
+        description: Full state name from the FIPS reference lookup.
+
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: Indicates whether the hospital was successfully matched to county-level FIPS data.
+
+      - name: is_svi_mapped
+        data_type: boolean
+        description: Indicates whether the hospital was successfully matched to county-level SVI data.
+
+      - name: hospital_type
+        data_type: string
+        description: CMS hospital type classification.
+
+      - name: hospital_ownership
+        data_type: string
+        description: CMS hospital ownership category.
+
+      - name: has_emergency_services
+        data_type: boolean
+        description: Indicates whether the hospital provides emergency services.
+
+      - name: is_birthing_friendly
+        data_type: boolean
+        description: Indicates whether the hospital meets CMS birthing-friendly designation criteria.
+
+      - name: total_population
+        data_type: integer
+        description: Estimated total population of the hospital's matched county or planning region.
+
+      - name: housing_units
+        data_type: integer
+        description: Estimated number of housing units in the hospital's matched county or planning region.
+
+      - name: households
+        data_type: integer
+        description: Estimated number of households in the hospital's matched county or planning region.
+
+      - name: below_150_percent_poverty_population_percentage
+        data_type: decimal
+        description: Estimated percentage of the matched county population below 150% of the federal poverty threshold.
+
+      - name: unemployment_rate
+        data_type: decimal
+        description: Estimated unemployment percentage for the matched county.
+
+      - name: uninsured_population_percentage
+        data_type: decimal
+        description: Estimated percentage of the matched county civilian noninstitutionalized population without health insurance.
+
+      - name: disabled_population_percentage
+        data_type: decimal
+        description: Estimated percentage of the matched county civilian noninstitutionalized population with a disability.
+
+      - name: overall_vulnerability_percentile_rank
+        data_type: decimal
+        description: Overall SVI percentile ranking for the matched county, where higher values indicate greater relative social vulnerability.
+
+  
   - name: int_readmission_measure_enriched
-    description: 
+    description: >
+      Intermediate model that enriches CMS Hospital Readmissions Reduction
+      Program records with readable readmission measure metadata. The model
+      preserves raw CMS values alongside parsed numeric metrics and supports
+      downstream fact table creation at the facility, measure, and reporting
+      period grain.
+
     columns:
-      - name: ____
-        data_type: 
-        description: 
+
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier uniquely identifying a hospital.
+
+      - name: facility_name
+        data_type: string
+        description: Hospital facility name from the HRRP source data.
+
+      - name: state_abbreviation
+        data_type: string
+        description: Two-letter state or territory abbreviation.
+
+      - name: is_measure_mapped
+        data_type: boolean
+        description: Indicates whether the HRRP measure ID successfully matched to the readmission measure reference table.
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+
+      - name: measure_name
+        data_type: string
+        description: Human-readable name of the readmission measure.
+
+      - name: condition_group
+        data_type: string
+        description: Medical condition or procedure group associated with the readmission measure.
+
+      - name: measure_category
+        data_type: string
+        description: High-level category of the measure, such as readmissions.
+
+      - name: measure_description
+        data_type: string
+        description: Expanded explanation of the readmission measure.
+
+      - name: number_of_discharges_raw
+        data_type: string
+        description: Original CMS discharge count value before parsing.
+
+      - name: number_of_discharges_numeric
+        data_type: integer
+        description: Parsed numeric count of hospital discharges used for readmission reporting.
+
+      - name: number_of_readmissions_raw
+        data_type: string
+        description: Original CMS readmission count value before parsing.
+
+      - name: number_of_readmissions_numeric
+        data_type: integer
+        description: Parsed numeric count of hospital readmissions.
+
+      - name: excess_readmission_ratio_raw
+        data_type: string
+        description: Original CMS excess readmission ratio before parsing.
+
+      - name: excess_readmission_ratio_numeric
+        data_type: decimal
+        description: Parsed excess readmission ratio; values above 1 indicate more readmissions than expected.
+
+      - name: predicted_readmission_rate_raw
+        data_type: string
+        description: Original predicted readmission rate value before parsing.
+
+      - name: predicted_readmission_rate_numeric
+        data_type: decimal
+        description: Parsed predicted readmission rate for the hospital and measure.
+
+      - name: expected_readmission_rate_raw
+        data_type: string
+        description: Original expected readmission rate value before parsing.
+
+      - name: expected_readmission_rate_numeric
+        data_type: decimal
+        description: Parsed expected readmission rate based on CMS benchmark calculations.
+
+      - name: start_date
+        data_type: date
+        description: Start date of the CMS HRRP reporting period.
+
+      - name: end_date
+        data_type: date
+        description: End date of the CMS HRRP reporting period.
+
+      - name: reporting_period
+        data_type: string
+        description: Derived reporting period label combining the start and end dates.
 
 
   - name: int_hospital_readmission_performance
-    description: 
+    description: >
+      Intermediate model that adds reusable readmission performance calculations
+      to enriched CMS HRRP records. This model classifies hospital readmission
+      performance relative to expected readmissions and prepares metrics for
+      downstream fact and mart models.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - facility_id
+              - measure_id
+              - reporting_period
+
     columns:
-      - name: ____
-        data_type: 
-        description: 
+
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier uniquely identifying a hospital.
+        tests:
+          - not_null
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+        tests:
+          - not_null
+
+      - name: readmission_rate_difference
+        data_type: decimal
+        description: Difference between predicted and expected readmission rates.
+
+      - name: has_excess_readmissions
+        data_type: boolean
+        description: Indicates whether the excess readmission ratio is greater than 1.
+
+      - name: readmission_performance_status
+        data_type: string
+        description: >
+          Categorical readmission performance label based on excess readmission
+          ratio: better_than_expected, as_expected, worse_than_expected, or
+          not_available.
+
+      - name: is_high_discharge_volume
+        data_type: boolean
+        description: Indicates whether the row meets the selected high discharge volume threshold.
+
+      - name: reporting_period
+        data_type: string
+        description: Derived reporting period label combining HRRP start and end dates.
+        tests:
+          - not_null
 
 
   - name: int_hospital_complete
-    description: 
+    description: >
+      Wide intermediate model combining hospital identity, geography, county-level
+      SVI indicators, readmission measure metadata, and readmission performance
+      calculations. This model serves as the reusable foundation for downstream
+      dimensional marts and healthcare equity analysis.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - facility_id
+              - measure_id
+              - reporting_period
+
     columns:
-      - name: ____
-        data_type: 
-        description: 
+
+      - name: facility_id
+        data_type: string
+        description: CMS facility identifier uniquely identifying a hospital.
+        tests:
+          - not_null
+
+      - name: facility_name
+        data_type: string
+        description: Hospital facility name.
+
+      - name: county_fips
+        data_type: string
+        description: County FIPS code assigned through hospital geographic enrichment.
+
+      - name: state_abbreviation
+        data_type: string
+        description: Two-letter state or territory abbreviation.
+
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level FIPS data.
+
+      - name: is_svi_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level SVI data.
+
+      - name: measure_id
+        data_type: string
+        description: CMS readmission measure identifier.
+        tests:
+          - not_null
+
+      - name: condition_group
+        data_type: string
+        description: Medical condition or procedure group associated with the readmission measure.
+
+      - name: excess_readmission_ratio_numeric
+        data_type: decimal
+        description: Parsed excess readmission ratio.
+
+      - name: readmission_rate_difference
+        data_type: decimal
+        description: Difference between predicted and expected readmission rates.
+
+      - name: readmission_performance_status
+        data_type: string
+        description: Business-friendly performance classification for readmission outcomes.
+
+      - name: overall_vulnerability_percentile_rank
+        data_type: decimal
+        description: Overall county SVI percentile rank, where higher values indicate greater social vulnerability.
+
+      - name: reporting_period
+        data_type: string
+        description: Derived reporting period label combining HRRP start and end dates.
+        tests:
+          - not_null
+
+    

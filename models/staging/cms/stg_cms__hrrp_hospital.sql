@@ -28,9 +28,8 @@ cleaned as (
         trim(cast(expected_readmission_rate as string)) as expected_readmission_rate_raw,
         {{ parse_numeric_or_null('expected_readmission_rate', '6,4') }} as expected_readmission_rate_numeric,
 
-        to_date(trim(start_date),'MM/dd/yyyy') as start_date,
-        to_date(trim(end_date),'MM/dd/yyyy') as end_date,
-        concat(year(start_date), '-', year(end_date)) as reporting_period
+        to_date(trim(start_date),'MM/dd/yyyy') as start_date_cleaned,
+        to_date(trim(end_date),'MM/dd/yyyy') as end_date_cleaned
     
     from source
 
@@ -60,9 +59,9 @@ final as (
         expected_readmission_rate_raw,
         expected_readmission_rate_numeric,
 
-        start_date,
-        end_date,
-        reporting_period
+        start_date_cleaned as start_date,
+        end_date_cleaned as end_date,
+        concat(start_date_cleaned, '_to_', end_date_cleaned) as reporting_period
 
     from cleaned
 
