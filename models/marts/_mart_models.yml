@@ -33,6 +33,14 @@ models:
         data_type: string
         description: Hospital ZIP code.
 
+      - name: is_county_fips_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level FIPS data.
+
+      - name: is_svi_mapped
+        data_type: boolean
+        description: Indicates whether the hospital successfully matched to county-level SVI data.
+
       - name: county_fips
         data_type: string
         description: County FIPS code assigned through geographic enrichment. May be null for territories or special geographies not mapped to county-level FIPS.
@@ -68,14 +76,6 @@ models:
       - name: is_birthing_friendly
         data_type: boolean
         description: Indicates whether the hospital meets CMS birthing-friendly designation criteria.
-
-      - name: is_county_fips_mapped
-        data_type: boolean
-        description: Indicates whether the hospital successfully matched to county-level FIPS data.
-
-      - name: is_svi_mapped
-        data_type: boolean
-        description: Indicates whether the hospital successfully matched to county-level SVI data.
 
 
   - name: dim_measure
