@@ -53,11 +53,11 @@ final as (
         overall_vulnerability_percentile_rank,
 
         case
-            when overall_vulnerability_percentile_rank >= 0.90 then 'very_high_vulnerability'
-            when overall_vulnerability_percentile_rank >= 0.75 then 'high_vulnerability'
-            when overall_vulnerability_percentile_rank >= 0.50 then 'moderate_vulnerability'
-            when overall_vulnerability_percentile_rank is not null then 'lower_vulnerability'
-            else 'not_mapped'
+            when overall_vulnerability_percentile_rank >= 0.90 then 'Very High'
+            when overall_vulnerability_percentile_rank >= 0.75 then 'High'
+            when overall_vulnerability_percentile_rank >= 0.50 then 'Moderate'
+            when overall_vulnerability_percentile_rank is not null then 'Low'
+            else 'Not Mapped'
         end as vulnerability_category,
 
         start_date,
@@ -65,6 +65,7 @@ final as (
         reporting_period
 
     from hospital_complete
+    where vulnerability_category != 'Not Mapped'
 
 )
 
