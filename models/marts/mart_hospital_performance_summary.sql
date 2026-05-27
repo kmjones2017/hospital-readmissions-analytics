@@ -26,21 +26,21 @@ aggregated as (
 
         sum(
             case
-                when readmission_performance_status = 'better_than_expected' then 1
+                when readmission_performance_status = 'Better Than Expected' then 1
                 else 0
             end
         ) as measures_better_than_expected_count,
 
         sum(
             case
-                when readmission_performance_status = 'as_expected' then 1
+                when readmission_performance_status = 'As Expected' then 1
                 else 0
             end
         ) as measures_as_expected_count,
 
         sum(
             case
-                when readmission_performance_status = 'worse_than_expected' then 1
+                when readmission_performance_status = 'Worse Than Expected' then 1
                 else 0
             end
         ) as measures_worse_than_expected_count,
@@ -61,18 +61,18 @@ final as (
         *,
 
         case
-            when average_excess_readmission_ratio > 1 then 'worse_than_expected'
-            when average_excess_readmission_ratio = 1 then 'as_expected'
-            when average_excess_readmission_ratio < 1 then 'better_than_expected'
-            else 'not_available'
+            when average_excess_readmission_ratio > 1 then 'Worse Than Expected'
+            when average_excess_readmission_ratio = 1 then 'As Expected'
+            when average_excess_readmission_ratio < 1 then 'Better Than Expected'
+            else 'Not Available'
         end as overall_readmission_performance_status,
 
         case
-            when overall_vulnerability_percentile_rank >= 0.90 then 'very_high_vulnerability'
-            when overall_vulnerability_percentile_rank >= 0.75 then 'high_vulnerability'
-            when overall_vulnerability_percentile_rank >= 0.50 then 'moderate_vulnerability'
-            when overall_vulnerability_percentile_rank is not null then 'lower_vulnerability'
-            else 'not_mapped'
+            when overall_vulnerability_percentile_rank >= 0.90 then 'Very High'
+            when overall_vulnerability_percentile_rank >= 0.75 then 'High'
+            when overall_vulnerability_percentile_rank >= 0.50 then 'Moderate'
+            when overall_vulnerability_percentile_rank is not null then 'Low'
+            else 'Not Mapped'
         end as vulnerability_category
 
     from aggregated

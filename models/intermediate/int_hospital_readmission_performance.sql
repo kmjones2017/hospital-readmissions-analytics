@@ -44,10 +44,10 @@ final as (
         end as has_excess_readmissions,
 
         case
-            when excess_readmission_ratio_numeric > 1 then 'worse_than_expected'
-            when excess_readmission_ratio_numeric = 1 then 'as_expected'
-            when excess_readmission_ratio_numeric < 1 then 'better_than_expected'
-            else 'not_available'
+            when excess_readmission_ratio_numeric > 1 then 'Worse Than Expected'
+            when excess_readmission_ratio_numeric = 1 then 'As Expected'
+            when excess_readmission_ratio_numeric < 1 then 'Better Than Expected'
+            else 'Not Available'
         end as readmission_performance_status,
 
         case
