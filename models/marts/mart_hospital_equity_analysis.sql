@@ -65,7 +65,7 @@ final as (
         reporting_period
 
     from hospital_complete
-    where vulnerability_category != 'Not Mapped'
+    where overall_vulnerability_percentile_rank is not null
 
 )
 
