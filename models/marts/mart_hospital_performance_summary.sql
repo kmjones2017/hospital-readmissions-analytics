@@ -76,6 +76,7 @@ final as (
         end as vulnerability_category
 
     from aggregated
+    where average_excess_readmission_ratio is not null and overall_vulnerability_percentile_rank is not null
 
 )
 
