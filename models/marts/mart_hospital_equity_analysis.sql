@@ -4,7 +4,7 @@ with hospital_complete as (
 
 ),
 
-final as (
+intermediary as (
 
     select
         facility_id,
@@ -67,6 +67,23 @@ final as (
     from hospital_complete
     where overall_vulnerability_percentile_rank is not null
 
+),
+
+final as (
+
+    select 
+
+        *,
+
+        case
+            when vulnerability_category = 'Low' then 1
+            when vulnerability_category = 'Moderate' then 2
+            when vulnerability_category = 'High' then 3
+            when vulnerability_category = 'Very High' then 4
+            else 99
+        end as vulnerability_category_sort
+
+    from intermediary
 )
 
 select * from final
