@@ -7,6 +7,7 @@ with readm_measure as (
 final as (
 
     select distinct
+        
         measure_id,
         measure_name,
         condition_group,
