@@ -1,12 +1,12 @@
 with source as (
 
-    select * from {{ ref('int_hospital_svi') }}
+    select * from {{ ref('int_hospital_complete') }}
 
 ),
 
 final as (
 
-    select 
+    select distinct
 
         facility_id,
         county_fips,

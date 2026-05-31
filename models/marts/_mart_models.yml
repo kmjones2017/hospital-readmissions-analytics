@@ -127,12 +127,20 @@ models:
         description: CMS facility identifier for the hospital.
         tests:
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('dim_hospital')
+                field: facility_id
 
       - name: measure_id
         data_type: string
         description: CMS readmission measure identifier.
         tests:
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('dim_measure')
+                field: measure_id
 
       - name: number_of_discharges_numeric
         data_type: integer
@@ -189,6 +197,10 @@ models:
         tests:
           - unique
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('dim_hospital')
+                field: facility_id
 
       - name: county_fips
         data_type: string
@@ -287,6 +299,12 @@ models:
         tests:
           - not_null
 
+      - name: vulnerability_category_sort
+        data_type: integer
+        description: >
+          Numeric sort key used to order vulnerability categories from lowest
+          to highest social vulnerability in reporting visuals.
+
         
   - name: mart_hospital_performance_summary
     description: >
@@ -327,14 +345,20 @@ models:
         data_type: integer
         description: Number of readmission measures represented for the hospital.
 
-      - name: overall_readmission_performance_status
-        data_type: string
-        description: Overall hospital readmission performance category based on average excess readmission ratio.
-
       - name: overall_vulnerability_percentile_rank
         data_type: decimal
         description: County-level overall SVI percentile rank.
 
+      - name: overall_readmission_performance_status
+        data_type: string
+        description: Overall hospital readmission performance category based on average excess readmission ratio.
+
       - name: vulnerability_category
         data_type: string
         description: Social vulnerability band derived from county-level SVI percentile rank.
+
+      - name: vulnerability_category_sort
+        data_type: integer
+        description: >
+          Numeric sort key used to order vulnerability categories from lowest
+          to highest social vulnerability in reporting visuals.
