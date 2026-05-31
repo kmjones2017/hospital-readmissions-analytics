@@ -1,0 +1,54 @@
+exposures:
+
+  - name: executive_overview
+    label: Hospital Performance Overview
+    type: dashboard  
+    maturity: medium                      
+    description: >                          
+      Executive overview of hospital readmission performance, geographic
+      distribution, and community vulnerability context across CMS HRRP
+      hospitals.
+
+    depends_on:                            
+      - ref('mart_hospital_performance_summary')
+      - ref('mart_hospital_equity_analysis')
+
+    owner:
+      name: Kayla Jones
+      email: kmjoness2017@gmail.com
+  
+  
+  - name: hospital_equity_analysis
+    label: Hospital Equity & Social Risk Analysis
+    type: dashboard
+    maturity: medium                        
+    description: >                          
+      Analytical dashboard comparing poverty, insurance coverage, community
+      vulnerability, and hospital readmission outcomes using CMS HRRP and
+      CDC/ATSDR SVI data.
+
+    depends_on:                            
+      - ref('mart_hospital_performance_summary')
+      - ref('mart_hospital_equity_analysis')
+
+    owner:
+      name: Kayla Jones
+      email: kmjoness2017@gmail.com 
+
+
+  - name: hospital_performance_detail
+    label: Hospital Performance Detail
+    type: dashboard
+    maturity: medium                        
+    description: >                          
+      Facility-level dashboard showing readmission outcomes, condition-specific
+      performance, and community risk indicators including poverty, uninsured
+      rate, and social vulnerability.
+
+    depends_on:                            
+      - ref('mart_hospital_performance_summary')
+      - ref('mart_hospital_equity_analysis')
+
+    owner:
+      name: Kayla Jones
+      email: kmjoness2017@gmail.com
