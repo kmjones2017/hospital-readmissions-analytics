@@ -1,3 +1,5 @@
+version: 2
+
 models:
   - name: int_hospitals_enriched
     description: >
@@ -96,9 +98,8 @@ models:
       - name: standardized_county_join_key
         data_type: string
         description: >
-          Normalized county join key from the county-name override table. Used
-          when the original CMS county/parish value needs to be translated to
-          match the FIPS reference data.
+          Normalized county join key generated from the county-name override table 
+          and used to align CMS county values with standardized FIPS county identifiers.
 
       - name: resolved_county_join_key
         data_type: string

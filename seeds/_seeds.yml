@@ -14,25 +14,6 @@ seeds:
         city_code: string
         city_fips_code: string
 
-  - name: cms_footnotes
-    description: >
-      CMS footnote code reference table used to interpret reporting limitations,
-      suppressed values, and special data-quality notes.
-    config:
-      column_types:
-        footnote_code: string
-        footnote_category: string
-        footnote_text: string
-        footnote_definition: string
-
-  - name: healthcare_acronyms
-    description: >
-      Healthcare acronym glossary used for documentation and business readability.
-    config:
-      column_types:
-        acronym: string
-        meaning: string
-
   - name: readmission_measures
     description: >
       Reference table mapping CMS readmission measure IDs to readable measure,

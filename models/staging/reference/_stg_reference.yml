@@ -5,20 +5,11 @@ sources:
     catalog: healthcare
     schema: seeds
 
-
     tables:
-      - name: cms_footnotes
-        description: >
-          Reference seed containing CMS footnote codes and definitions used
-          throughout hospital quality datasets.
-
+      
       - name: fips_lookup
         description: > 
           Reference seed mapping counties and states to official county FIPS codes. 
-
-      - name: healthcare_acronyms
-        description: >
-          Reference seed containing healthcare acronym definitions.
 
       - name: readmission_measures 
         description: >
@@ -29,36 +20,7 @@ sources:
 
 
 models:
-  - name: stg_reference__cms_footnotes
-    description: >
-      Cleaned reference model containing CMS footnote definitions used
-      for interpreting hospital reporting values.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments: 
-            combination_of_columns:
-              - footnote_code
-              - footnote_category
-    columns:
-      - name: footnote_code
-        description: >
-          Footnote identifier appearing in CMS datasets.
-        tests:
-          - not_null
-
-      - name: footnote_category
-        description: >
-          Grouping category assigned to the footnote.
-
-      - name: footnote_text
-        description: >
-          Original CMS footnote text.
-
-      - name: footnote_definition
-        description: >
-          Expanded interpretation of the footnote meaning.
-
-
+  
   - name: stg_reference__fips_lookup
     description: >
       Standardized county-level FIPS reference lookup used for healthcare
@@ -102,24 +64,6 @@ models:
       - name: state_fips_code
         description: >
           Two-digit state FIPS code.
-        tests:
-          - not_null
-
-
-  - name: stg_reference__healthcare_acronyms
-    description: >
-      Standardized healthcare acronym lookup reference.
-    columns:
-      - name: acronym
-        description: >
-          Healthcare abbreviation or acronym.
-        tests:
-          - unique
-          - not_null
-
-      - name: meaning
-        description: >
-          Expanded healthcare term.
         tests:
           - not_null
 
@@ -200,8 +144,8 @@ models:
 
       - name: standardized_county_join_key
         description: >
-          Normalized join key generated from the standardized county name used
-          to join against the FIPS lookup table.
+          Normalized county join key generated from the county-name override table 
+          and used to align CMS county values with standardized FIPS county identifiers.
         tests:
           - not_null
         
