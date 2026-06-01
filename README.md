@@ -17,7 +17,7 @@ The goal is to explore how community-level social vulnerability indicators relat
 
 ## Data Warehouse Architecture
 
-<img width="3840" height="1937" alt="hrrp_portfolio_project_architecture_diagram" src="https://github.com/user-attachments/assets/ce0fff31-cea4-46e9-9969-ef68c6b60014" />
+![Hospital Readmissions Star Schema](assets/architecture/hospital_readmissions_erd.png)
 
 
 The model separates the core analytical warehouse from dashboard-ready reporting models.
@@ -103,13 +103,10 @@ The three Power BI dashboards are documented in dbt as exposures, linking dashbo
 ## Dashboards & Insights
 
 ### Hospital Performance Overview
-
-<img width="1422" height="793" alt="hospital_performance_overview" src="https://github.com/user-attachments/assets/fd116e7d-af42-4bcb-92d0-a813c2e3d717" />
-
+![Hospital Performance Overview](assets/dashboards/hospital_performance_overview.png)
 
 ### Interactive Demonstration
-<img width="1432" height="802" alt="dashboard_1_v2" src="https://github.com/user-attachments/assets/f6d98b67-24be-4c68-adc8-eb916660be29" />
-
+![Hospital Performance Overview Demo](assets/dashboards/dashboard_performance_overview.gif)
 
 The overview dashboard summarizes national hospital readmission performance, including:
 
@@ -129,13 +126,10 @@ Key finding(s):
 ---
 
 ### Hospital Equity & Social Risk Analysis
-
-<img width="1412" height="792" alt="hospital_equity_analysis_v2" src="https://github.com/user-attachments/assets/c2da1bc6-f68a-4391-a8c3-3efa26e3eaa6" />
-
+![Hospital Equity & Social Risk Analysis](assets/dashboards/hospital_equity_social_risk_analysis.png)
 
 ### Interactive Demonstration
-<img width="1420" height="787" alt="dashboard_2_v2" src="https://github.com/user-attachments/assets/6b43e4ae-f71f-4f6d-ae4b-ca1d9e31b8fc" />
-
+![Hospital Equity & Social Risk Analysis Demo](assets/dashboards/dashboard_equity_analysis.gif)
 
 The equity dashboard explores relationships between hospital readmission outcomes and community-level social risk indicators, including:
 
@@ -153,14 +147,13 @@ Key finding(s):
 ---
 
 ### Hospital Performance Detail
-<img width="1422" height="795" alt="hospital_performance_detail" src="https://github.com/user-attachments/assets/eb118a4c-51e2-480a-9439-a714543418cd" />
+![Hospital Performance Detail](assets/dashboards/hospital_performance_detail.png)
 
 
 
 
 ### Interactive Demonstration
-<img width="1420" height="788" alt="dashboard_3_v2" src="https://github.com/user-attachments/assets/7e21be95-7c55-4d43-bc75-3dfde4a9e197" />
-
+![Hospital Performance Detail Demo](assets/dashboards/dashboard_performance_detail.gif)
 
 The detail dashboard provides a facility-level view of:
 
