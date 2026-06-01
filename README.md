@@ -153,12 +153,13 @@ Key finding(s):
 ---
 
 ### Hospital Performance Detail
+<img width="1422" height="795" alt="hospital_performance_detail" src="https://github.com/user-attachments/assets/eb118a4c-51e2-480a-9439-a714543418cd" />
 
-<img width="1422" height="795" alt="hospital_performance_detail" src="https://github.com/user-attachments/assets/51b69fd1-3563-4b99-8b87-d55ae02db5d0" />
+
 
 
 ### Interactive Demonstration
-<img width="1420" height="828" alt="dashboard_3" src="https://github.com/user-attachments/assets/58bc7df9-ecd2-4683-b064-cb33a5b724e5" />
+<img width="1420" height="788" alt="dashboard_3_v2" src="https://github.com/user-attachments/assets/7e21be95-7c55-4d43-bc75-3dfde4a9e197" />
 
 
 The detail dashboard provides a facility-level view of:
