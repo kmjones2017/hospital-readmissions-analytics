@@ -98,6 +98,9 @@ The three Power BI dashboards are documented in dbt as exposures, linking dashbo
 - Hospital Equity & Social Risk Analysis
 - Hospital Performance Detail
 
+> **Dashboard availability:** The Power BI report was developed locally using static, public datasets. Because this project was completed without an organizational Power BI/Fabric workspace, the dashboards are presented through screenshots and GIF walkthroughs rather than a live hosted report.
+
+
 ---
 
 ## Dashboards & Insights
