@@ -92,7 +92,7 @@ All CMS HRRP records in this dataset cover the reporting period **July 1, 2021 t
 
 A threshold of **500 discharges** was selected as a simple analytical segmentation variable and does **not** represent an official CMS classification.
 
-This project uses static public datasets. It is intended for analytical modeling, dashboarding, and portfolio demonstration rather than operational healthcare decision-making.
+This project uses static, public datasets. It is intended for analytical modeling, dashboarding, and portfolio demonstration rather than operational healthcare decision-making.
 
 Results should be interpreted as exploratory analytics rather than causal conclusions.
 
@@ -213,6 +213,12 @@ assets/
   dashboards/
   validation/
 
+data/
+  raw/
+    FY_2026_Hospital_Readmissions_Reduction_Program_Hospital.csv
+    Hospital_General_Information.csv
+    SVI_2022_US_county.csv
+
 macros/
   generate_schema_name.sql
   normalize_county_name.sql
@@ -227,20 +233,14 @@ models/
   intermediate/
   marts/
 
+scripts/
+  validate_csv_inputs.py
+  validation_config.yaml
+
 seeds/
   fips_lookup.csv
   county_name_overrides.csv
   readmission_measures.csv
-
-data/
-  raw/
-    FY_2026_Hospital_Readmissions_Reduction_Program_Hospital.csv
-    Hospital_General_Information.csv
-    SVI_2022_US_county.csv
-
-scripts/
-  validate_csv_inputs.py
-  validation_config.yaml
 
 validation_reports/
 ```
@@ -337,9 +337,11 @@ Several public source datasets required preprocessing before ingestion:
 
 ### Validation Example
 
-Terminal Summary:
+#### Terminal Summary:
+![Validation Summary in Terminal Window](assets/validation/validation_success.png)
 
-Generated Report:
+#### Generated Report:
+![Report Example](assets/validation/validation_report_example.png)
 
 ### Technical Highlights
 
