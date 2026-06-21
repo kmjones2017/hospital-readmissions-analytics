@@ -1,0 +1,226 @@
+files:
+SVI_2022_US_county.csv:
+  primary_keys:
+    - STCNTY
+
+  required_columns:
+    - STCNTY
+    - STATE
+    - ST_ABBR
+    - COUNTY
+    - E_TOTPOP
+    - RPL_THEME1
+    - RPL_THEME2
+    - RPL_THEME3
+    - RPL_THEME4
+    - RPL_THEMES
+
+  non_null_columns:
+    - STCNTY
+    - STATE
+    - ST_ABBR
+    - COUNTY
+
+  accepted_values:
+    ST_ABBR:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - VI
+      - GU
+      - MP
+      - AS
+
+Hospital_General_Information.csv:
+  primary_keys:
+    - Facility ID
+
+  required_columns:
+    - Facility ID
+    - Facility Name
+    - State
+    - ZIP Code
+
+  non_null_columns:
+    - Facility ID
+    - Facility Name
+    - State
+    - ZIP Code
+
+  accepted_values:
+    State:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - VI
+      - GU
+      - MP
+      - AS
+
+FY_2026_Hospital_Readmissions_Reduction_Program_Hospital.csv:
+  primary_keys:
+    - Facility ID
+    - Measure Name
+
+  required_columns:
+    - Facility ID
+    - Facility Name
+    - State
+    - Measure Name
+    - Start Date
+    - End Date
+
+  non_null_columns:
+    - Facility ID
+    - Facility Name
+    - State
+    - Measure Name
+    - Start Date
+    - End Date
+
+  accepted_values:
+    Measure Name:
+      - READM-30-AMI-HRRP
+      - READM-30-COPD-HRRP
+      - READM-30-CABG-HRRP
+      - READM-30-HF-HRRP
+      - READM-30-HIP-KNEE-HRRP
+      - READM-30-PN-HRRP
+
+county_name_overrides.csv:
+  primary_keys:
+    - state_abbreviation
+    - source_county_name
+
+  required_columns:
+    - state_abbreviation
+    - source_county_name
+    - standardized_county_name
+
+  non_null_columns:
+    - state_abbreviation
+    - source_county_name
+    - standardized_county_name
+
+fips_lookup.csv:
+  required_columns:
+    - StCnty FIPS Code
+    - County Name
+    - State Code
+    - State Name
+
+  non_null_columns:
+    - State Code
+    - State Name
+
+readmission_measures.csv:
+  primary_keys:
+    - measure_id
+
+  required_columns:
+    - measure_id
+    - measure_name
+    - condition_group
+
+  non_null_columns:
+    - measure_id
+    - measure_name
+    - condition_group

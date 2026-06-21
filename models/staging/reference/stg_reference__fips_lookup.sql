@@ -4,6 +4,8 @@ with source as (
 
 ),
 
+-- Source file contains multiple city-level rows per county.
+-- Collapse records to one row per county/state combination for downstream joins to hospital and SVI data.
 cleaned as (
 
     select

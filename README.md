@@ -13,6 +13,16 @@ The goal is to explore how community-level social vulnerability indicators relat
 - Which conditions exhibit the greatest variation in readmission outcomes?
 - Do hospitals in more socially vulnerable communities show different readmission patterns?
 
+## Key Features
+
+- End-to-end analytics engineering workflow using Databricks, dbt, and Power BI
+- Multi-source healthcare and social vulnerability data integration
+- Dimensional warehouse modeling with fact and dimension tables
+- Automated dbt testing and documentation
+- Custom Python-based source-data validation framework
+- Dashboard-ready analytical marts
+- Reproducible, version-controlled development workflow
+
 ---
 
 ## Data Warehouse Architecture
@@ -38,7 +48,7 @@ Dashboard-ready marts include:
 
 ## Transformation Pipeline
 
-Raw public datasets were loaded into Databricks and transformed using dbt:
+Raw public datasets were validated, loaded into Databricks, and transformed using dbt:
 
 `raw → staging → intermediate → marts`
 
@@ -82,7 +92,7 @@ All CMS HRRP records in this dataset cover the reporting period **July 1, 2021 t
 
 A threshold of **500 discharges** was selected as a simple analytical segmentation variable and does **not** represent an official CMS classification.
 
-This project uses static public datasets. It is intended for analytical modeling, dashboarding, and portfolio demonstration rather than operational healthcare decision-making.
+This project uses static, public datasets. It is intended for analytical modeling, dashboarding, and portfolio demonstration rather than operational healthcare decision-making.
 
 Results should be interpreted as exploratory analytics rather than causal conclusions.
 
@@ -188,7 +198,8 @@ Key finding(s):
 ## Technology Stack
 
 - **Databricks** for data storage, SQL development, and Delta table management
-- **dbt** for data transformation, testing, documentation, and model organization
+- **dbt** for transformation, testing, documentation, and lineage
+- **Python (Pandas, pathlib, PyYAML)** for source-data validation and automation
 - **Power BI** for dashboard development
 - **GitHub** for version control and project documentation
 
@@ -197,6 +208,23 @@ Key finding(s):
 ## dbt Project Structure
 
 ```text
+assets/
+  architecture/
+  dashboards/
+  validation/
+
+data/
+  raw/
+    FY_2026_Hospital_Readmissions_Reduction_Program_Hospital.csv
+    Hospital_General_Information.csv
+    SVI_2022_US_county.csv
+
+macros/
+  generate_schema_name.sql
+  normalize_county_name.sql
+  parse_numeric_or_null.sql
+  standardize_boolean.sql
+
 models/
   staging/
     atsdr/
@@ -205,16 +233,16 @@ models/
   intermediate/
   marts/
 
+scripts/
+  validate_csv_inputs.py
+  validation_config.yaml
+
 seeds/
   fips_lookup.csv
   county_name_overrides.csv
   readmission_measures.csv
 
-macros/
-  generate_schema_name.sql
-  normalize_county_name.sql
-  parse_numeric_or_null.sql
-  standardize_boolean.sql
+validation_reports/
 ```
 
 ---
@@ -246,6 +274,87 @@ Examples include:
 - `measure_id` uniqueness in `dim_measure`
 - Relationship tests from fact tables to dimensions
 - Composite uniqueness for readmission fact grain: facility, measure, and reporting period
+
+---
+
+## Source Data Validation
+
+Prior to loading data into Databricks and executing dbt transformations, source files were validated using a custom Python-based validation utility.
+
+The validation framework was created to simulate a lightweight ingestion quality-control process and to identify common data quality issues before they could propagate into downstream models, tests, and dashboards.
+
+Validation rules are defined in a YAML configuration file, allowing checks to be maintained separately from application logic and extended to additional datasets with minimal code changes.
+
+### Validation Checks
+
+The validation utility performs the following checks:
+
+- Required column verification
+- Configurable non-null column validation
+- Primary key duplicate detection
+- Accepted value validation for categorical fields
+- Empty-file detection
+- Multi-file validation across both source and reference datasets
+
+The utility generates a timestamped validation report summarizing pass/fail status and any detected issues.
+
+### Example Validation Workflow
+
+```
+CSV Files
+    ↓
+Validation Utility
+    ↓
+Validation Report
+    ↓
+Databricks Ingestion
+    ↓
+dbt Transformations
+```
+
+### Configuration-Driven Design
+
+Validation rules are maintained in a YAML configuration file rather than hardcoded in Python.
+
+Example configuration concepts include:
+
+```
+required_columns:
+non_null_columns:
+primary_keys:
+accepted_values:
+```
+
+This approach separates business rules from validation logic and makes it easier to add new datasets without modifying the underlying validation framework.
+
+### Data Source Considerations
+
+Several public source datasets required preprocessing before ingestion:
+
+- Source column names were standardized to support Databricks and dbt naming conventions.
+- Reference datasets contained territory-level records (such as Puerto Rico) that required different validation treatment than county-level records.
+- Certain reference datasets contained duplicate geographic records at finer levels of granularity and were intentionally aggregated during transformation to support county-level analytical joins.
+
+### Validation Example
+
+#### Terminal Summary:
+![Validation Summary in Terminal Window](assets/validation/validation_success.png)
+
+#### Generated Report:
+![Report Example](assets/validation/validation_report_example.png)
+
+### Technical Highlights
+
+The validation utility demonstrates:
+
+- Python scripting
+- Pandas-based data quality checks
+- Configuration-driven validation design
+- File-system automation using pathlib
+- Reusable validation functions
+- Automated report generation
+
+The utility is located in `scripts/` and serves as a supplemental quality-control layer alongside dbt tests implemented within the warehouse.
 
 ---
 
